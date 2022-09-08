@@ -55,6 +55,7 @@ namespace GCode2xml
             xns.Add("", "");
 
             if ( partName.StartsWith("L1-") == false) { partName = "L1-" + partName; } // add required name prefix, if missing
+            if ( exportPath.EndsWith("\\") == false ) { exportPath += "\\"; }
 
             TextWriter writer = new StreamWriter(exportPath + partName + ".xml");
             

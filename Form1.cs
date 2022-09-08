@@ -15,6 +15,7 @@ namespace GCode2xml
         public InputForm()
         {
             InitializeComponent();
+            textBoxExport.Text = Properties.Settings.Default.LastExportFolder;
         }
 
         private void buttonProcess_Click(object sender, EventArgs e)
@@ -26,6 +27,8 @@ namespace GCode2xml
                 Point[] plyPoints = readGcode.ParseGcodeFile(textBoxImport.Text); // read the coordinates from the Gcode file
 
                 SerXML.Export2XML(plyPoints, partName, textBoxExport.Text); // write points in FARO XML format
+
+                MessageBox.Show("GCode export to XML complete", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if ( textBoxImport.Text == "" ) { MessageBox.Show("Please specify an import GCode file",Application.ProductName,MessageBoxButtons.OK,MessageBoxIcon.Exclamation);}
             else if ( textBoxExport.Text == "" ) { MessageBox.Show("Please specify an export path", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation); }
@@ -34,6 +37,9 @@ namespace GCode2xml
         private void buttonBrowseImport_Click(object sender, EventArgs e)
         {
             OpenFileDialog fd = new OpenFileDialog();
+            fd.Filter = "GCode txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            fd.FilterIndex = 1;
+            fd.RestoreDirectory = true;
             fd.ShowDialog();
 
             if (fd.FileName != "") 
@@ -43,10 +49,15 @@ namespace GCode2xml
         private void buttonBrowseExport_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fb = new FolderBrowserDialog();
-            fb.ShowDialog();
-
-            if (fb.SelectedPath != "")
-            { textBoxExport.Text = fb.SelectedPath; }
+            fb.SelectedPath = textBoxExport.Text;
+           
+            if (fb.ShowDialog() == DialogResult.OK)
+            { 
+                textBoxExport.Text = fb.SelectedPath;
+                
+                Properties.Settings.Default.LastExportFolder = fb.SelectedPath;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)

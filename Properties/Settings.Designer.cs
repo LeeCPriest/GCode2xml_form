@@ -22,5 +22,17 @@ namespace GCode2xml.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastExportFolder {
+            get {
+                return ((string)(this["LastExportFolder"]));
+            }
+            set {
+                this["LastExportFolder"] = value;
+            }
+        }
     }
 }
