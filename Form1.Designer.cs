@@ -31,13 +31,13 @@ namespace GCode2xml
         {
             this.buttonProcess = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxImport = new System.Windows.Forms.TextBox();
-            this.textBoxExport = new System.Windows.Forms.TextBox();
-            this.buttonBrowseImport = new System.Windows.Forms.Button();
-            this.buttonBrowseExport = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonBrowseExport = new System.Windows.Forms.Button();
+            this.buttonBrowseImport = new System.Windows.Forms.Button();
+            this.textBoxExport = new System.Windows.Forms.TextBox();
+            this.textBoxImport = new System.Windows.Forms.TextBox();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,34 +69,23 @@ namespace GCode2xml
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "File Paths";
             // 
-            // textBoxImport
+            // label2
             // 
-            this.textBoxImport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxImport.Location = new System.Drawing.Point(84, 19);
-            this.textBoxImport.Name = "textBoxImport";
-            this.textBoxImport.Size = new System.Drawing.Size(260, 20);
-            this.textBoxImport.TabIndex = 2;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(62, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "XML Export";
             // 
-            // textBoxExport
+            // label1
             // 
-            this.textBoxExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExport.Location = new System.Drawing.Point(84, 45);
-            this.textBoxExport.Name = "textBoxExport";
-            this.textBoxExport.Size = new System.Drawing.Size(260, 20);
-            this.textBoxExport.TabIndex = 3;
-            // 
-            // buttonBrowseImport
-            // 
-            this.buttonBrowseImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonBrowseImport.Location = new System.Drawing.Point(356, 19);
-            this.buttonBrowseImport.Name = "buttonBrowseImport";
-            this.buttonBrowseImport.Size = new System.Drawing.Size(35, 20);
-            this.buttonBrowseImport.TabIndex = 3;
-            this.buttonBrowseImport.Text = "...";
-            this.buttonBrowseImport.UseVisualStyleBackColor = true;
-            this.buttonBrowseImport.Click += new System.EventHandler(this.buttonBrowseImport_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(72, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "GCode Import";
             // 
             // buttonBrowseExport
             // 
@@ -109,6 +98,35 @@ namespace GCode2xml
             this.buttonBrowseExport.UseVisualStyleBackColor = true;
             this.buttonBrowseExport.Click += new System.EventHandler(this.buttonBrowseExport_Click);
             // 
+            // buttonBrowseImport
+            // 
+            this.buttonBrowseImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowseImport.Location = new System.Drawing.Point(356, 19);
+            this.buttonBrowseImport.Name = "buttonBrowseImport";
+            this.buttonBrowseImport.Size = new System.Drawing.Size(35, 20);
+            this.buttonBrowseImport.TabIndex = 3;
+            this.buttonBrowseImport.Text = "...";
+            this.buttonBrowseImport.UseVisualStyleBackColor = true;
+            this.buttonBrowseImport.Click += new System.EventHandler(this.buttonBrowseImport_Click);
+            // 
+            // textBoxExport
+            // 
+            this.textBoxExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxExport.Location = new System.Drawing.Point(84, 45);
+            this.textBoxExport.Name = "textBoxExport";
+            this.textBoxExport.Size = new System.Drawing.Size(260, 20);
+            this.textBoxExport.TabIndex = 3;
+            // 
+            // textBoxImport
+            // 
+            this.textBoxImport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxImport.Location = new System.Drawing.Point(84, 19);
+            this.textBoxImport.Name = "textBoxImport";
+            this.textBoxImport.Size = new System.Drawing.Size(260, 20);
+            this.textBoxImport.TabIndex = 2;
+            // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -116,27 +134,9 @@ namespace GCode2xml
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 3;
-            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Text = "Close";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "GCode Import";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "XML Export";
             // 
             // InputForm
             // 

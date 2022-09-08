@@ -16,25 +16,29 @@ namespace GCode2xml
             if ( textBoxImport.Text != "" && textBoxExport.Text != "")
             {
                 string partName = Program.GetPartName(textBoxImport.Text); // extract partname from path (i.e. filename without extension plus required prefix 'L1-')
-                string resultMsg = "";
-
-                Point[] plyPoints = readGcode.ParseGcodeFile(textBoxImport.Text); // read the coordinates from the Gcode file
+                string message;
+                string resultMsg;
+                
+                Point[] plyPoints = new Point[0]; // create array of the Point class
+                resultMsg = readGcode.ParseGcodeFile(ref plyPoints, textBoxImport.Text); // read the coordinates from the Gcode file
 
                 if (plyPoints != null)
                 {
                     resultMsg = SerXML.Export2XML(plyPoints, partName, textBoxExport.Text); // write points in FARO XML format
+                    if (resultMsg == "") { message = "GCode export to XML complete"; }
+                    else { message = "Error exporting XML file: ";  }
+                        
                 }
-                else { resultMsg = "Unknown reading GCode file"; }
-                
+                else { message = "Error reading GCode file"; }
+
 
                 if (resultMsg == "")
                 {
-                    MessageBox.Show("GCode export to XML complete", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("GCode export error: " + Environment.NewLine 
-                        + Environment.NewLine + resultMsg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(message + resultMsg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
 

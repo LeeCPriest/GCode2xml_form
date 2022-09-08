@@ -5,10 +5,8 @@ namespace GCode2xml
 {
     class readGcode
     {
-        public static Point[] ParseGcodeFile(string filename)
+        public static string ParseGcodeFile(ref Point[] points, string filename)
         {
-            Point[] points = new Point[0]; // create array of the Point class
-
             try
             {
                 // open GCode file for read access
@@ -27,6 +25,7 @@ namespace GCode2xml
 
                     bool readCoords = true; // reset with each line in case a comment is found
 
+                    // loop through the header text, set endHeader when G0 or G1 is found
                     foreach (string Gcode in coords)
                     {
                         if (Gcode == "G0" || Gcode == "G1") { endHeader = true; }  // rapid positioining (G0) or the start of the feed cutting (G1)
@@ -78,11 +77,11 @@ namespace GCode2xml
                     }
                 }
 
-                return points;
-            }
-            catch (Exception)
-            {
                 return null;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
     }
