@@ -17,11 +17,6 @@ namespace GCode2xml
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new InputForm());
-
-            //string ouptutFolder = "C:\\Users\\lpriest\\OneDrive - Christie Digital Systems USA, Inc\\Documents\\SWx Macros\\WeldmentID\\3-xml\\RT\\PARTS\\";
-            //string inputPath = "C:\\Users\\lpriest\\OneDrive - Christie Digital Systems USA, Inc\\Documents\\SWx Macros\\WeldmentID\\3-xml\\Gcode_DR.txt";
-
-
         }
 
         public static string GetPartName(string inputPath)
@@ -32,7 +27,7 @@ namespace GCode2xml
 
             string[] splitCharFile = { "." };
             string[] filenameSplit = fileName.Split(splitCharFile, StringSplitOptions.RemoveEmptyEntries);
-            string partName = "L1-" + filenameSplit[0];
+            string partName = filenameSplit[0];
 
             return partName;
         }

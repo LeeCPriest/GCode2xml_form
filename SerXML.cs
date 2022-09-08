@@ -46,46 +46,58 @@ namespace GCode2xml
 
     class SerXML
     {
-        public static void Export2XML(Point[] plyPoints, string partName, string exportPath)
+        public static string Export2XML(Point[] plyPoints, string partName, string exportPath)
         {
-            // Create an instance of the XmlSerializer class;
-            // specify the type of object to serialize.
-            XmlSerializer serializer = new XmlSerializer(typeof(XML));
-            XmlSerializerNamespaces xns = new XmlSerializerNamespaces();
-            xns.Add("", "");
+            try
+            {
+                // Create an instance of the XmlSerializer class;
+                // specify the type of object to serialize.
+                XmlSerializer serializer = new XmlSerializer(typeof(XML));
+                XmlSerializerNamespaces xns = new XmlSerializerNamespaces();
+                xns.Add("", "");
+                
+                if (exportPath.EndsWith("\\") == false) { exportPath += "\\"; }
 
-            if ( partName.StartsWith("L1-") == false) { partName = "L1-" + partName; } // add required name prefix, if missing
-            if ( exportPath.EndsWith("\\") == false ) { exportPath += "\\"; }
+                TextWriter writer = new StreamWriter(exportPath + partName + ".xml");
 
-            TextWriter writer = new StreamWriter(exportPath + partName + ".xml");
-            
-            // create instance of PLY class, assign values to ply attributes
-            Ply ply1 = new Ply();
-            ply1.NAME = partName;
-            ply1.INSTRUCTIONS= "";
-            ply1.NOTES = "";
-            Ply[] plys = { ply1 };
+                string plyName = partName;
+                if (plyName.StartsWith("L1-") == false) { plyName = "L1-" + plyName; } // add required name prefix, if missing
 
-            plys[0].POINT = plyPoints; // assign points to point elements in Plys class
+                // create instance of PLY class, assign values to ply attributes
+                Ply ply1 = new Ply();
+                ply1.NAME = partName;
+                ply1.INSTRUCTIONS = "";
+                ply1.NOTES = "";
+                Ply[] plys = { ply1 };
 
-            // create instance of Part class, assign values to part attributes
-            Part part1 = new Part();
-            part1.NAME = partName;
-            part1.STATUS = "";
-            part1.DBVERSION = "3.9";
-            part1.HIGHESTPLY = 1;
-            part1.TOPLAYERS = 1;
-            part1.FIELDDATE = "";
-            Part[] parts = { part1 };
-            parts[0].PLY = plys; // assign plys to PLY element
+                plys[0].POINT = plyPoints; // assign points to point elements in Plys class
 
-            // create instance of XML class
-            XML xm1 = new XML();
-            xm1.PART = parts; // assign parts to PART element
+                // create instance of Part class, assign values to part attributes
+                Part part1 = new Part();
+                part1.NAME = partName;
+                part1.STATUS = "";
+                part1.DBVERSION = "3.9";
+                part1.HIGHESTPLY = 1;
+                part1.TOPLAYERS = 1;
+                part1.FIELDDATE = "";
+                Part[] parts = { part1 };
+                parts[0].PLY = plys; // assign plys to PLY element
 
-            // write xml data to file
-            serializer.Serialize(writer, xm1, xns);
-            writer.Close();
+                // create instance of XML class
+                XML xm1 = new XML();
+                xm1.PART = parts; // assign parts to PART element
+
+                // write xml data to file
+                serializer.Serialize(writer, xm1, xns);
+                writer.Close();
+                
+                return "";
+            }
+            catch (System.Exception ex)
+            {
+                return ex.Message;
+            }
+           
         }
     }
 }

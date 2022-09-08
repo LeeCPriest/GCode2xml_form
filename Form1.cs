@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GCode2xml
@@ -23,14 +16,29 @@ namespace GCode2xml
             if ( textBoxImport.Text != "" && textBoxExport.Text != "")
             {
                 string partName = Program.GetPartName(textBoxImport.Text); // extract partname from path (i.e. filename without extension plus required prefix 'L1-')
+                string resultMsg = "";
 
                 Point[] plyPoints = readGcode.ParseGcodeFile(textBoxImport.Text); // read the coordinates from the Gcode file
 
-                SerXML.Export2XML(plyPoints, partName, textBoxExport.Text); // write points in FARO XML format
+                if (plyPoints != null)
+                {
+                    resultMsg = SerXML.Export2XML(plyPoints, partName, textBoxExport.Text); // write points in FARO XML format
+                }
+                else { resultMsg = "Unknown reading GCode file"; }
+                
 
-                MessageBox.Show("GCode export to XML complete", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (resultMsg == "")
+                {
+                    MessageBox.Show("GCode export to XML complete", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("GCode export error: " + Environment.NewLine 
+                        + Environment.NewLine + resultMsg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
-            else if ( textBoxImport.Text == "" ) { MessageBox.Show("Please specify an import GCode file",Application.ProductName,MessageBoxButtons.OK,MessageBoxIcon.Exclamation);}
+
+            else if ( textBoxImport.Text == "" ) { MessageBox.Show("Please specify an import GCode file",Application.ProductName,MessageBoxButtons.OK,MessageBoxIcon.Exclamation); }
             else if ( textBoxExport.Text == "" ) { MessageBox.Show("Please specify an export path", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation); }
         }
 
