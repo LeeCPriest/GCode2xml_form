@@ -60,24 +60,12 @@ namespace GCode2xml
 
                 TextWriter writer = new StreamWriter(exportPath + partName + ".xml");
 
-                //string plyName = partName;
-                //if (plyName.StartsWith("L1-") == false) { plyName = "L1-" + plyName; } // add required name prefix, if missing
-
-                // create instance of PLY class, assign values to ply attributes
-                //Ply ply1 = new Ply();
-                //ply1.NAME = partName;
-                //ply1.INSTRUCTIONS = "";
-                //ply1.NOTES = "";
-                //Ply[] plys = { ply1 };
-
-                //plys[0].POINT = plyPoints; // assign points to point elements in Plys class
-
                 // create instance of Part class, assign values to part attributes
                 Part part1 = new Part();
                 part1.NAME = partName;
                 part1.STATUS = "";
                 part1.DBVERSION = "3.9";
-                part1.HIGHESTPLY = 1;
+                part1.HIGHESTPLY = plys.Length-1;
                 part1.TOPLAYERS = 1;
                 part1.FIELDDATE = "";
                 Part[] parts = { part1 };
