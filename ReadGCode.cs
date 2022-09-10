@@ -44,7 +44,7 @@ namespace GCode2xml
                                 if (countPly > prevCountPly)
                                 {
                                     Ply ply = new Ply();
-                                    ply.NAME = "L1-Ply" + countPly;
+                                    ply.NAME = "L" + countPly + "-Ply" + countPly;
                                     ply.POINT = points;
                                     Array.Resize(ref plys, countPly + 1);
                                     plys[countPly - 1] = ply;
