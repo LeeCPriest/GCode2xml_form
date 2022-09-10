@@ -19,12 +19,12 @@ namespace GCode2xml
                 string message;
                 string resultMsg;
                 
-                Point[] plyPoints = new Point[0]; // create array of the Point class
-                resultMsg = readGcode.ParseGcodeFile(ref plyPoints, textBoxImport.Text); // read the coordinates from the Gcode file
+                Ply[] plys = new Ply[0]; // create array of the Ply class
+                resultMsg = readGcode.ParseGcodeFile(ref plys, textBoxImport.Text); // read the coordinates from the Gcode file
 
-                if (plyPoints != null)
+                if (resultMsg == "")
                 {
-                    resultMsg = SerXML.Export2XML(plyPoints, partName, textBoxExport.Text); // write points in FARO XML format
+                    resultMsg = SerXML.Export2XML(plys, partName, textBoxExport.Text); // write points in FARO XML format
                     if (resultMsg == "") { message = "GCode export to XML complete"; }
                     else { message = "Error exporting XML file: ";  }
                         
@@ -38,7 +38,7 @@ namespace GCode2xml
                 }
                 else
                 {
-                    MessageBox.Show(message + resultMsg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(message + Environment.NewLine + Environment.NewLine + resultMsg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
 
