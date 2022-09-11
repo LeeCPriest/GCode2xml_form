@@ -9,17 +9,16 @@ namespace GCode2xml
         {
             try
             {
-                int countPly = -1;
+                int countPly = 0;
                 int prevCountPly = 0;
                 Point[] points = new Point[0];
-                
+
+                decimal Xcoord_Prev = 0;
+                decimal Ycoord_Prev = 0;
+
                 // open GCode file for read access
                 FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
                 StreamReader sr = new StreamReader(fs);
-
-                bool endHeader = false; // signifies that the header information has ended and a rapid positioining (G0) or start of feed cutting (G1) command has been found
-                decimal Xcoord_Prev = 0;
-                decimal Ycoord_Prev = 0;
 
                 while (sr.EndOfStream != true)
                 {
@@ -31,36 +30,34 @@ namespace GCode2xml
 
                     if (linetext.StartsWith("(") == false) // skip comment lines (i.e. lines with bracket character)
                     {
-                        // loop through the gcodes in each line
-                        foreach (string Gcode in coords)
+                        foreach (string Gcode in coords) // loop through the gcodes in each line
                         {
-                            if (plys.Length == 0 && Gcode == "G91") // if no points have been read and G91 code is found (i.e. relative postioining) return error
-                            { return "GCode file must use absolute positioning"; } // skip return to home position
+                            // if no coordinate points have been read and G91 code is found (i.e. relative postioining) return error
+                            if (plys.Length == 0 && Gcode == "G91") 
+                            { return "GCode file must use absolute positioning"; }
 
-                            if (Gcode == "G0" || Gcode.StartsWith("M") == true)
+                            if (Gcode == "G0" || Gcode.StartsWith("M") == true) // for each new G0 (rapid) or 'M' code (tool change)
                             {
-                                countPly += 1;
-
-                                if (countPly > prevCountPly)
+                                // create new PLY layer after each G0 (or M) gcode following the first set of coordinates
+                                if (countPly > prevCountPly)  
                                 {
-                                    Ply ply = new Ply();
-                                    ply.NAME = "L" + countPly + "-Ply" + countPly;
+                                    Ply ply = new Ply(); // create a new ply object
+                                    ply.NAME = "L" + countPly + "-Ply" + countPly; // assign the tag of the form L#-Name (where #'s are sequential)
                                     ply.POINT = points;
-                                    Array.Resize(ref plys, countPly + 1);
-                                    plys[countPly - 1] = ply;
+                                    Array.Resize(ref plys, countPly + 1); // re-size the plys array, increasing the count by 1
+                                    plys[countPly - 1] = ply; // add the ply (containing the group of points) the ply array
 
-                                    if (Gcode.StartsWith("M") == true) { return ""; } // exit without error message when an "M" code is found (i.e. successfully parsed all coordinate data)
+                                    if (Gcode.StartsWith("M") == true) { return ""; } // exit without error message when an "M" code is found (i.e. a tool change which is assumed to be the end of the coordinate data, if the GCode was created with a single tool)
 
                                     prevCountPly = countPly;
                                 }
 
-                                points = new Point[0];
+                                countPly += 1;
+                                points = new Point[0]; // reset the array of Point data
                             }
-
-                            if (Gcode == "G0" || Gcode == "G1") { endHeader = true; }  // rapid positioining (G0) or the start of the feed cutting (G1)
                         }
 
-                        if (endHeader == true && readCoords == true)
+                        if (readCoords == true)
                         {
                             bool bXVal = false;
                             bool bYVal = false;
@@ -70,19 +67,23 @@ namespace GCode2xml
                             point.NUMBER = points.Length; // assign point ID number
                             point.NAME = "";
 
-                            foreach (string Gcode in coords)
+                            foreach (string Gcode in coords) // loop through the gcodes in each line
                             {
-                                if (Gcode.ToString().StartsWith("X") == true)
-                                {
-                                    bXVal = true;
+                                if (Gcode.StartsWith("X") == true)
+                                {                                   
+                                    // strip off the X character and convert the coordinate to decimal
                                     decimal XcoordVal = Convert.ToDecimal(Gcode.Substring(1, Gcode.ToString().Length - 1));
+
+                                    bXVal = true;
                                     point.XVAL = XcoordVal;
                                     Xcoord_Prev = XcoordVal;
                                 }
-                                else if (Gcode.ToString().StartsWith("Y") == true)
+                                else if (Gcode.StartsWith("Y") == true)
                                 {
-                                    bYVal = true;
+                                    // strip off the Y character and convert the coordinate to decimal
                                     decimal YcoordVal = Convert.ToDecimal(Gcode.Substring(1, Gcode.ToString().Length - 1));
+                                    
+                                    bYVal = true;
                                     point.YVAL = YcoordVal;
                                     Ycoord_Prev = YcoordVal;
                                 }
